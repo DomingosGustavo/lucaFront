@@ -9,6 +9,10 @@ import Tab from "@material-ui/core/Tab";
 import QuestionCard from "../components/questionCard";
 import "../styles/tabs.css";
 import Button from "../components/button";
+import Hidden from "@material-ui/core/Hidden";
+import Fab from "@material-ui/core/Fab";
+import pen from "../assets/pen.svg";
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -29,6 +33,45 @@ function TabPanel(props) {
   );
 }
 
+const data = [
+  {
+    name: "juan.c23",
+    isFavorite: true,
+    question: "¿Cuáles son los múltiplos del 7?",
+    description:
+      "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque...",
+    course: "Matemáticas 6",
+    commentNumber: 72,
+  },
+  {
+    name: "juan.c23",
+    isFavorite: true,
+    question: "¿Cuáles son los múltiplos del 7?",
+    description:
+      "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque...",
+    course: "Matemáticas 6",
+    commentNumber: 72,
+  },
+  {
+    name: "juan.c23",
+    isFavorite: true,
+    question: "¿Cuáles son los múltiplos del 7?",
+    description:
+      "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque...",
+    course: "Matemáticas 6",
+    commentNumber: 72,
+  },
+  {
+    name: "juan.c23",
+    isFavorite: true,
+    question: "¿Cuáles son los múltiplos del 7?",
+    description:
+      "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque...",
+    course: "Matemáticas 6",
+    commentNumber: 72,
+  },
+];
+
 const useStyles = makeStyles((theme) => ({
   title: {
     paddingTop: 40,
@@ -42,19 +85,21 @@ const useStyles = makeStyles((theme) => ({
     "text-align": "left",
     color: "var(--gray1)",
   },
-  button:{
-    paddingTop: 20 
-  }
+  button: {
+    paddingTop: 20,
+  },
 }));
 export default function Home(props) {
   const classes = useStyles();
-  const {history} = props;
+  const { history } = props;
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const onClickNewQuestion = () => history.push("/question");
 
   const handleChangeIndex = (index) => {
     setValue(index);
@@ -66,9 +111,17 @@ export default function Home(props) {
           <Grid item sm={10} xs={6}>
             <Typography className={classes.title}>Comunidad Luca</Typography>
           </Grid>
-          <Grid item sm={2} xs={6} className={classes.button} onClick={() => history.push('/question')}>
-            <Button text="Nueva Pergunta" />
-          </Grid>
+          <Hidden smDown>
+            <Grid
+              item
+              sm={2}
+              xs={6}
+              className={classes.button}
+              onClick={onClickNewQuestion}
+            >
+              <Button text="Nueva Pergunta" />
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
       <Grid item>
@@ -91,26 +144,31 @@ export default function Home(props) {
           onChangeIndex={handleChangeIndex}
         >
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <QuestionCard
-              data={{
-                name: "juan.c23",
-                isFavorite: true,
-                question: "¿Cuáles son los múltiplos del 7?",
-                description:
-                  "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque...",
-                course: "Matemáticas 6",
-                commentNumber: 72,
-              }}
-            />
+            {data.map((x) => (
+              <QuestionCard data={x} />
+            ))}
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Item Two
+            {data.map((x) => (
+              <QuestionCard data={x} />
+            ))}
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            Item Three
+            {data.map((x) => (
+              <QuestionCard data={x} />
+            ))}
           </TabPanel>
         </SwipeableViews>
       </Grid>
+      <Hidden smUp>
+        <Fab
+          color={"primary"}
+          style={{ position: "absolute", bottom: 70, right: 10 }}
+          onClick={onClickNewQuestion}
+        >
+          <img src={pen} />
+        </Fab>
+      </Hidden>
     </Grid>
   );
 }
